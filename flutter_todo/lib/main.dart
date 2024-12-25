@@ -3,14 +3,21 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(const MyApp());
 }
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
 
+
+
+
+
+
+
+class addTask extends StatefulWidget {
+  const addTask({super.key});
+  
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<addTask> createState() => addTaskState();
 }
 
-class _HomepageState extends State<Homepage> {
+class addTaskState extends State<addTask> {
   List<String> _todos = [];
   final TextEditingController _controller = TextEditingController();
 
@@ -21,64 +28,85 @@ class _HomepageState extends State<Homepage> {
   }
   @override
   Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(
+            "Add Todo",
+            style: Theme.of(context).textTheme.displaySmall!.copyWith(
+              color: Colors.white
+            ),
+          ),
+          content: TextField(
+            controller: _controller,
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              color: Colors.white
+            ),
+          ),
+          backgroundColor: const Color(0xFF191918),
+        )
+      ),
+      icon: Row(
+        children: [
+          Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          SizedBox(width: 0),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Text("Add Todo", style: Theme.of(context).textTheme.headlineMedium,),
+          )
+        ]
+        
+      ), 
+      color: Colors.white,
+      iconSize: 30
+    );
+  }
+}
+
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  
+  @override
+  Widget build(BuildContext context) {
     return Container(
       color: Color(0xFF111110),
-      child: LayoutBuilder(
-        builder:(BuildContext context, BoxConstraints constraints) {
-          return Center(
-
-            child: Container(
-              color: const Color(0xFF191918),
-              width: constraints.maxWidth * 0.75,
-              height: constraints.maxHeight * 0.9,  
-              child: Column(
-                children: [
-                  Container(
-                    color: Colors.transparent,
-                    margin: EdgeInsets.only(top: constraints.maxHeight * 0.05),
-                    child: Text(
-                      "todo app",
-                      style: Theme.of(context).textTheme.displayLarge!.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () => showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: Text(
-                                "Add Todo",
-                                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                                  color: Colors.white
-                                ),
-                              ),
-                              content: TextField(
-                                controller: _controller,
-                                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  color: Colors.white
-                                ),
-                              ),
-                              backgroundColor: const Color(0xFF191918),
-                            )
-                          ),
-                          icon: Icon(Icons.add), 
-                          color: Colors.white
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+      child: Center(
+        child: Container(
+          color: const Color(0xFF191918),
+          width: 900,
+          height: 700,  
+          child: Column(
+            children: [
+              Container(
+                color: Colors.transparent,
+                margin: EdgeInsets.only(top: 10),
+                child: Text(
+                  "todo app",
+                  style: Theme.of(context).textTheme.displayLarge
+                ),
               ),
-            ),
-          );
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
 
-        },
-      ),
+                children: [
+                  addTask(),
+                ],
+              )
+            ],
+          ),
+        ),
+      )
     ); 
   }
 }
@@ -90,7 +118,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Homepage(),
       theme: ThemeData(
-        textTheme: Typography.blackMountainView
+        textTheme: Typography.blackMountainView.copyWith(
+          displayLarge: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w800
+          ),
+          headlineMedium: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w400
+          ),
+        )
       ),
     );
   }
